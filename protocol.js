@@ -231,6 +231,10 @@ Node.prototype.isError = function() {
 	return this.child('error');
 };
 
+Node.prototype.isNotFound = function() {
+	return this.child('error') && this.child('error').attribute('code') == 404; 
+};
+
 Node.prototype.isLastSeen = function() {
 	return this.child('query') && this.child('query').attribute('seconds');
 };
@@ -276,6 +280,10 @@ Node.prototype.isAccountExtended = function() {
 Node.prototype.isGetPrivacySettings = function() {
 	return this.tag() == 'iq' && this.attribute('id').indexOf('get_privacy_settings') != -1;
 };
+
+Node.prototype.isSetBlocklist = function () {
+	return this.tag() == 'iq' && this.attribute('id').indexOf('set_blocklist') != -1;	
+}
 
 Node.prototype.isGetBlocklist = function () {
 	return this.tag() == 'iq' && this.attribute('id').indexOf('get_blocklist') != -1;	

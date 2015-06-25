@@ -180,6 +180,44 @@ WhatsApi.prototype.getStatuses = function(numbers, callback) {
 };
 
 /**
+ * Set new blocklist
+ * @param {Array} numbers   Array of phone numbers
+ * @param {BlocklistCallback} callback
+ */
+WhatsApi.prototype.setPrivacyBlocklist = function(numbers){
+
+	// String to Array, just in case
+	if (!Array.isArray(numbers)) {
+		numbers = [numbers];
+	}
+
+	var items = [];
+	for(var i = 0; i < numbers.length; i++){
+
+		var item = new protocol.Node('item', {
+			"type": 	"jid",
+			"value": 	this.createJID(numbers[i]),
+			"action": 	"deny",
+			"order": 	i + 1//WhatsApp stream crashes on zero index
+		}, null, null);
+
+		items.push(item);
+	}
+
+	var childNode = new protocol.Node('list', {name: 'default'}, items);
+	var queryNode = new protocol.Node('query', null, [childNode]);
+
+	var attributes = {
+		id    : this.nextMessageId('set_blocklist_'),		
+		xmlns: 'jabber:iq:privacy',
+		type : 'set'
+	};
+
+	this.sendNode(new protocol.Node('iq', attributes, [queryNode]));
+
+}
+
+/**
  * Request blocklist
  * @param {blocklistCallback} callback  Called when the blocklist is received
  */

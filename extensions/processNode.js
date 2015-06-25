@@ -12,7 +12,7 @@ var WhatsApi = module.exports = function() {};
 WhatsApi.prototype.processNode = function(node) {
 	var nodeId = node.attribute('id');
 	
-	if (node.isError()) {
+	if (node.isError() && !node.isNotFound()) {
 		var errorNode = node.child('error');
 		var error = {
 			code: errorNode.attribute('code'),
@@ -644,8 +644,19 @@ WhatsApi.prototype.processNode = function(node) {
 		return;
 	}
 
+	// Set blocklist 
+	if (node.isSetBlocklist()) {
+		this.emit('setBlocklist');
+	}
+
 	// Get blocklist
 	if (node.isGetBlocklist()) {
+
+		// check if blocklist is empty
+		if(node.isNotFound()){
+			this.emit('getBlocklist', []);
+			return;
+		}
 
 		var listNode = node.child('query').child('list');
 
@@ -655,7 +666,7 @@ WhatsApi.prototype.processNode = function(node) {
 			blocked.push(child.attribute('value'));
 		};	
 		
-		this.emit('blocklist', blocked);
+		this.emit('getBlocklist', blocked);
 		return;
 	}
 };
