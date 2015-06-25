@@ -643,6 +643,21 @@ WhatsApi.prototype.processNode = function(node) {
 		
 		return;
 	}
+
+	// Get blocklist
+	if (node.isGetBlocklist()) {
+
+		var listNode = node.child('query').child('list');
+
+		var blocked = [];
+		for (var i = 0; i < listNode.children().length; i++) {
+			var child = listNode.child(i);
+			blocked.push(child.attribute('value'));
+		};	
+		
+		this.emit('blocklist', blocked);
+		return;
+	}
 };
 
 /**

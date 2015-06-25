@@ -277,6 +277,10 @@ Node.prototype.isGetPrivacySettings = function() {
 	return this.tag() == 'iq' && this.attribute('id').indexOf('get_privacy_settings') != -1;
 };
 
+Node.prototype.isGetBlocklist = function () {
+	return this.tag() == 'iq' && this.attribute('id').indexOf('get_blocklist') != -1;	
+}
+
 Node.prototype.isSendPrivacySettings = function() {
 	return this.tag() == 'iq' && this.attribute('id').indexOf('send_privacy_settings') != -1;
 };

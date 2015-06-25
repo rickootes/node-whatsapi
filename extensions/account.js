@@ -180,6 +180,26 @@ WhatsApi.prototype.getStatuses = function(numbers, callback) {
 };
 
 /**
+ * Request blocklist
+ * @param {blocklistCallback} callback  Called when the blocklist is received
+ */
+WhatsApi.prototype.requestPrivacyBlocklist = function() {
+	
+	var listNode = new protocol.Node('list', {"name": "default"}, null, null);
+	var queryNode = new protocol.Node('query', null, [listNode]);
+
+	var attributes = {
+		id    : this.nextMessageId('get_blocklist_'),		
+		xmlns: 'jabber:iq:privacy',
+		type : 'get'
+	};
+
+	this.sendNode(new protocol.Node('iq', attributes, [queryNode]));
+
+};
+
+
+/**
  * Request last seen time for given user
  * @param {String}   who       Phone number
  * @param {LastSeenCallback} callback  Called when the last seen time is received
