@@ -195,10 +195,10 @@ WhatsApi.prototype.setPrivacyBlocklist = function(numbers){
 	for(var i = 0; i < numbers.length; i++){
 
 		var item = new protocol.Node('item', {
-			"type": 	"jid",
-			"value": 	this.createJID(numbers[i]),
-			"action": 	"deny",
-			"order": 	i + 1//WhatsApp stream crashes on zero index
+			'type': 	'jid',
+			'value': 	this.createJID(numbers[i]),
+			'action': 	'deny',
+			'order': 	i + 1//WhatsApp stream crashes on zero index
 		}, null, null);
 
 		items.push(item);
@@ -223,7 +223,7 @@ WhatsApi.prototype.setPrivacyBlocklist = function(numbers){
  */
 WhatsApi.prototype.requestPrivacyBlocklist = function() {
 	
-	var listNode = new protocol.Node('list', {"name": "default"}, null, null);
+	var listNode = new protocol.Node('list', {name: 'default'}, null, null);
 	var queryNode = new protocol.Node('query', null, [listNode]);
 
 	var attributes = {
